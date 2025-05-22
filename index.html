@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Insights: Urinalysis & Protein Assessment Landscape (Dark Theme)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Tailwind gray-900 */
+            color: #D1D5DB; /* Tailwind gray-300 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Default max-width */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Base height */
+            max-height: 400px; /* Max height */
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .chart-container {
+                height: 350px;
+            }
+        }
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .chart-container {
+                height: 400px;
+                max-width: 700px;
+            }
+        }
+        .stat-card {
+            background-color: #1F2937; /* Tailwind gray-800 */
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Shadow might need adjustment for dark theme if too subtle */
+            margin-bottom: 2rem;
+            border: 1px solid #374151; /* Tailwind gray-700 border for cards */
+        }
+        .section-title {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700;
+            color: #60A5FA; /* Tailwind blue-400 */
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #3B82F6; /* Tailwind blue-500 */
+            padding-bottom: 0.5rem;
+        }
+        .subsection-title {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600;
+            color: #93C5FD; /* Tailwind blue-300 */
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .accent-text {
+            color: #2DD4BF; /* Tailwind teal-400 */
+        }
+        .highlight-stat {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 700;
+            color: #2DD4BF; /* Tailwind teal-400 */
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .flowchart-step {
+            background-color: #1E3A8A; /* Darker blue, e.g., blue-800 variant */
+            border: 1px solid #3B82F6; /* Tailwind blue-500 */
+            color: #D1D5DB; /* Tailwind gray-300 */
+            border-radius: 0.375rem; /* rounded-md */
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+        .flowchart-arrow {
+            text-align: center;
+            font-size: 1.5rem; /* text-2xl */
+            color: #60A5FA; /* Tailwind blue-400 */
+            margin: 0.25rem 0;
+        }
+        /* Chosen Palette: Dark Theme Adaptation of Brilliant Blues
+           Body Background: #111827 (gray-900)
+           Default Text: #D1D5DB (gray-300)
+           Card Background: #1F2937 (gray-800)
+           Section Title: #60A5FA (blue-400)
+           Subsection Title: #93C5FD (blue-300)
+           Highlight/Accent: #2DD4BF (teal-400)
+           Header Gradient: from-[#3B82F6] (blue-500) to-[#1E40AF] (blue-800)
+           Chart Text: #D1D5DB (gray-300)
+        */
+        /* Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output. */
+        /* Narrative Plan Summary: (Remains the same as previous version)
+           Section 1: Introduction to Urinalysis & Proteinuria - Importance and overview.
+           Section 2: POCT Urine Dipstick - Key analytes and procedural importance.
+           Section 3: CLIA Standards - Waived vs. Non-Waived test implications.
+           Section 4: Protein Detection Challenges - Dipstick limitations, non-albumin proteins.
+           Section 5: Proteinuria Types - Transient vs. Persistent, and subtypes (Glomerular, Tubular, Overflow).
+           Section 6: Advanced Assessment - ACR vs. PCR comparison and guidelines.
+           Section 7: 24-Hour Urine Collection - Procedural guide and common errors.
+           Section 8: Conclusion - Key takeaways for accurate diagnostics.
+        */
+        /* Visualization Choices Summary: (Remains the same as previous version)
+           - Big Number (Prevalence/Importance): Large Text (HTML/CSS). NO SVG.
+           - Dipstick Analytes: Chart.js Donut Chart. NO SVG.
+           - CLIA Comparison: HTML Table. NO SVG.
+           - False Positives/Negatives Dipstick Protein: Chart.js Bar Chart. NO SVG.
+           - Proteinuria Types (Transient/Persistent, G/T/O): Chart.js Stacked Bar Chart or Grouped Bar Chart. NO SVG.
+           - ACR vs. PCR Sensitivity (Conceptual): Chart.js Line Chart. NO SVG.
+           - ACR vs. PCR Comparison: HTML Table. NO SVG.
+           - 24-Hour Collection Steps: Structured HTML/CSS Flowchart. NO SVG, NO MERMAID JS.
+           - Collection Pitfalls: HTML List. NO SVG.
+           All Chart.js instances will use Canvas, label wrapping, and specified tooltip configuration.
+        */
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-gradient-to-r from-[#3B82F6] to-[#1E40AF] text-[#F9FAFB] p-6 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-bold text-center">Comprehensive Insights: The Urinalysis & Protein Assessment Landscape</h1>
+            <p class="text-center text-lg mt-1 text-[#DBEAFE]">An In-Depth Analysis of Diagnostic Methodologies and Clinical Implications</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="intro" class="stat-card">
+            <h2 class="section-title">The Critical Role of Urinalysis in Health Assessment</h2>
+            <p class="text-gray-300 mb-4">Urinalysis and urinary protein assessment are fundamental investigations in clinical practice, providing a crucial window into renal, metabolic, and systemic health. Early and accurate detection of abnormalities, particularly proteinuria, is paramount for timely intervention and management of conditions like Chronic Kidney Disease (CKD). This report delves into the key facets of these diagnostic processes.</p>
+            <div class="highlight-stat">
+                <span>~15%</span>
+            </div>
+            <p class="text-center text-gray-400 mb-4">Estimated adult prevalence of CKD in some populations, often initially detected via urinalysis. Early detection is key.</p>
+            <p class="text-gray-300">Understanding the nuances of tests like the Point-of-Care Testing (POCT) urine dipstick, the implications of CLIA standards, and the advanced assessment methods for proteinuria (ACR, PCR, 24-hour collection) is essential for healthcare professionals. This infographic synthesizes critical data points and procedural knowledge for enhanced clinical decision-making.</p>
+        </section>
+
+        <section id="dipstick-overview" class="stat-card">
+            <h2 class="section-title">Front-Line Diagnostics: POCT Urine Dipstick Analysis</h2>
+            <p class="text-gray-300 mb-4">The POCT urine dipstick is a rapid, qualitative or semi-quantitative screening tool used widely for detecting a range of conditions including UTIs, kidney disease, and diabetes. Its simplicity and speed are invaluable, but understanding its analytes and procedural accuracy is critical.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <div>
+                    <h3 class="subsection-title">Key Analytes Screened by Dipstick</h3>
+                    <p class="text-gray-400 mb-3">Dipsticks test for multiple substances. The chart below highlights some of the most clinically significant analytes commonly found on a standard urine dipstick.</p>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1">
+                        <li><strong>Leukocyte Esterase & Nitrites:</strong> Indicators of potential Urinary Tract Infections (UTIs).</li>
+                        <li><strong>Protein:</strong> Primarily albumin; a key marker for kidney damage.</li>
+                        <li><strong>Glucose & Ketones:</strong> Important for diabetes screening and management.</li>
+                        <li><strong>Blood:</strong> Can indicate infection, stones, glomerular disease, or malignancy.</li>
+                        <li><strong>pH & Specific Gravity:</strong> Reflect acid-base balance, hydration, and concentrating ability.</li>
+                        <li><strong>Bilirubin & Urobilinogen:</strong> Suggestive of liver or biliary tract issues, or hemolysis.</li>
+                    </ul>
+                </div>
+                <div class="chart-container h-[350px] md:h-[400px]">
+                    <canvas id="dipstickAnalytesChart"></canvas>
+                </div>
+            </div>
+
+            <h3 class="subsection-title mt-6">Procedural Precision is Paramount</h3>
+            <p class="text-gray-300 mb-2">Accurate dipstick results depend heavily on correct procedure. Errors like incorrect timing, insufficient sample, or cross-contamination can lead to misdiagnosis. Key steps include:</p>
+            <ol class="list-decimal list-inside text-gray-400 space-y-1 pl-4">
+                <li>Ensuring fresh, well-mixed sample and unexpired strips.</li>
+                <li>Complete but brief immersion of all reagent pads.</li>
+                <li>Removing excess urine correctly to prevent run-over.</li>
+                <li>Adhering to specified read times for each analyte.</li>
+                <li>Comparing colors accurately against the reference chart in good lighting.</li>
+            </ol>
+            <p class="text-sm text-gray-500 mt-3">Failure to follow these steps can significantly compromise test validity, potentially delaying necessary treatment or leading to inappropriate interventions.</p>
+        </section>
+
+        <section id="clia-standards" class="stat-card">
+            <h2 class="section-title">Regulatory Framework: CLIA Waived vs. Non-Waived Tests</h2>
+            <p class="text-gray-300 mb-4">The Clinical Laboratory Improvement Amendments (CLIA) classify tests based on complexity and risk of harm from erroneous results. This impacts where tests are performed and the level of oversight.</p>
+            <h3 class="subsection-title">Waived Tests: Simplicity and Accessibility</h3>
+            <p class="text-gray-300 mb-2">CLIA-waived tests, like manual urine dipsticks, are simple to perform with a low risk of incorrect results. They require a Certificate of Waiver and adherence to manufacturer instructions, facilitating their use in diverse point-of-care settings.</p>
+            <h3 class="subsection-title">Non-Waived Tests: Complexity and Stringent Oversight</h3>
+            <p class="text-gray-300 mb-4">Non-waived tests (moderate and high complexity) involve more sophisticated methods and carry higher risks. Examples include automated urinalysis with microscopy and quantitative protein assays. These require stricter personnel qualifications, quality control, proficiency testing, and are subject to routine inspections.</p>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-[#1F2937] border border-[#4B5563] rounded-lg">
+                    <thead class="bg-[#374151] text-[#F9FAFB]">
+                        <tr>
+                            <th class="py-3 px-4 border-b border-[#4B5563] text-left">Feature</th>
+                            <th class="py-3 px-4 border-b border-[#4B5563] text-left">Waived Tests</th>
+                            <th class="py-3 px-4 border-b border-[#4B5563] text-left">Non-Waived Tests (Moderate/High)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="hover:bg-[#374151]">
+                            <td class="py-3 px-4 border-b border-[#4B5563] font-semibold">Complexity & Risk</td>
+                            <td class="py-3 px-4 border-b border-[#4B5563]">Simple, low risk</td>
+                            <td class="py-3 px-4 border-b border-[#4B5563]">More complex, moderate to high risk</td>
+                        </tr>
+                        <tr class="hover:bg-[#374151]">
+                            <td class="py-3 px-4 border-b border-[#4B5563] font-semibold">Regulatory Oversight</td>
+                            <td class="py-3 px-4 border-b border-[#4B5563]">Certificate of Waiver, follow manufacturer</td>
+                            <td class="py-3 px-4 border-b border-[#4B5563]">Certificate of Compliance/Accreditation, routine inspections</td>
+                        </tr>
+                        <tr class="hover:bg-[#374151]">
+                            <td class="py-3 px-4 border-b border-[#4B5563] font-semibold">Personnel Qualifications</td>
+                            <td class="py-3 px-4 border-b border-[#4B5563]">Minimal training</td>
+                            <td class="py-3 px-4 border-b border-[#4B5563]">Specific CLIA-defined qualifications</td>
+                        </tr>
+                        <tr class="hover:bg-[#374151]">
+                            <td class="py-3 px-4 border-b border-[#4B5563] font-semibold">Quality Control (QC)</td>
+                            <td class="py-3 px-4 border-b border-[#4B5563]">Manufacturer's instructions</td>
+                            <td class="py-3 px-4 border-b border-[#4B5563]">Stringent CLIA QC standards</td>
+                        </tr>
+                        <tr class="hover:bg-[#374151]">
+                            <td class="py-3 px-4 border-b border-[#4B5563] font-semibold">Proficiency Testing (PT)</td>
+                            <td class="py-3 px-4 border-b border-[#4B5563]">Not required</td>
+                            <td class="py-3 px-4 border-b border-[#4B5563]">Required for regulated analytes</td>
+                        </tr>
+                        <tr class="hover:bg-[#374151]">
+                            <td class="py-3 px-4 border-b border-[#4B5563] font-semibold">Urinalysis Examples</td>
+                            <td class="py-3 px-4 border-b border-[#4B5563]">Manual dipstick, simple readers</td>
+                            <td class="py-3 px-4 border-b border-[#4B5563]">Automated microscopy, quantitative protein assays</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+             <p class="text-sm text-gray-500 mt-3">Understanding these distinctions is crucial for interpreting test results within their appropriate context of reliability and regulatory compliance.</p>
+        </section>
+
+        <section id="protein-puzzle" class="stat-card">
+            <h2 class="section-title">The Protein Puzzle: Dipstick Limitations & Non-Albumin Proteins</h2>
+            <p class="text-gray-300 mb-4">Dipstick protein detection relies on the "protein error of indicators," primarily sensitive to albumin. This selectivity can lead to underestimation or missed detection of other clinically significant proteins.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="subsection-title">Dipstick Sensitivity: Mostly Albumin</h3>
+                    <p class="text-gray-300 mb-2">While useful for screening albuminuria (detecting as low as 5-10 mg/dL of albumin), dipsticks are notoriously poor at detecting globulins or Bence-Jones proteins (immunoglobulin light chains).</p>
+                    <p class="text-gray-300 font-semibold">Scenario: Normal Dipstick, High 24-Hour Protein</p>
+                    <p class="text-gray-400 mb-3">This discrepancy often occurs when proteinuria is predominantly non-albumin. Conditions like multiple myeloma (producing Bence-Jones proteins) can result in significant total proteinuria missed by dipstick. Further tests like Sulfosalicylic Acid (SSA) test or Urine Protein Electrophoresis (UPEP) are then vital.</p>
+                </div>
+                <div>
+                    <h3 class="subsection-title">Factors Affecting Dipstick Protein Accuracy</h3>
+                    <div class="chart-container h-[300px] md:h-[350px]">
+                        <canvas id="dipstickProteinInterferenceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+             <p class="text-sm text-gray-500 mt-4">A negative dipstick for protein does not rule out significant proteinuria if non-albumin types are suspected. Clinical context is key for guiding further investigation.</p>
+        </section>
+
+        <section id="proteinuria-types" class="stat-card">
+            <h2 class="section-title">Proteinuria Patterns: Transient vs. Persistent & Underlying Causes</h2>
+            <p class="text-gray-300 mb-4">Proteinuria can be temporary (transient) and benign, or ongoing (persistent) indicating underlying pathology. Distinguishing these is crucial.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="subsection-title">Transient Proteinuria</h3>
+                    <p class="text-gray-300 mb-2">Often physiological, resolves when the trigger is removed. Common triggers include fever, strenuous exercise, dehydration, emotional stress, and orthostatic (postural) proteinuria (protein present when upright, absent when supine, common in adolescents).</p>
+                    <h3 class="subsection-title mt-4">Persistent Proteinuria</h3>
+                    <p class="text-gray-300 mb-2">Consistently present, usually signifies kidney disease or a systemic disorder. Key types include:</p>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1 pl-2">
+                        <li><strong>Glomerular:</strong> Most common; due to damaged glomerular filter (e.g., diabetic nephropathy, glomerulonephritis). Primarily albumin.</li>
+                        <li><strong>Tubular:</strong> Impaired tubular reabsorption of low-molecular-weight (LMW) proteins (e.g., drug-induced TIN, Fanconi syndrome).</li>
+                        <li><strong>Overflow:</strong> Overproduction of LMW proteins overwhelms tubular reabsorption (e.g., Bence-Jones proteins in multiple myeloma, myoglobin in rhabdomyolysis).</li>
+                    </ul>
+                </div>
+                <div class="chart-container h-[400px] md:h-[450px]">
+                     <canvas id="proteinuriaCausesChart"></canvas>
+                </div>
+            </div>
+            <p class="text-sm text-gray-500 mt-4">Persistent proteinuria, especially glomerular, is a significant marker for Chronic Kidney Disease (CKD) progression and requires thorough investigation.</p>
+        </section>
+
+        <section id="acr-vs-pcr" class="stat-card">
+            <h2 class="section-title">Advanced Assessment: Albumin-to-Creatinine (ACR) vs. Protein-to-Creatinine (PCR)</h2>
+            <p class="text-gray-300 mb-4">Spot urine ACR and PCR are convenient alternatives to 24-hour collections, correcting for urine concentration. Guidelines increasingly favor ACR for initial screening.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                <div class="lg:col-span-2">
+                    <h3 class="subsection-title">Comparing ACR and PCR</h3>
+                    <div class="overflow-x-auto mb-4">
+                        <table class="min-w-full bg-[#1F2937] border border-[#4B5563] rounded-lg">
+                            <thead class="bg-[#374151] text-[#F9FAFB]">
+                                <tr>
+                                    <th class="py-2 px-3 border-b border-[#4B5563] text-left">Feature</th>
+                                    <th class="py-2 px-3 border-b border-[#4B5563] text-left">Urine ACR</th>
+                                    <th class="py-2 px-3 border-b border-[#4B5563] text-left">Urine PCR</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-300 text-sm">
+                                <tr class="hover:bg-[#374151]">
+                                    <td class="py-2 px-3 border-b border-[#4B5563] font-semibold">Measures</td>
+                                    <td class="py-2 px-3 border-b border-[#4B5563]">Albumin relative to creatinine</td>
+                                    <td class="py-2 px-3 border-b border-[#4B5563]">Total protein relative to creatinine</td>
+                                </tr>
+                                <tr class="hover:bg-[#374151]">
+                                    <td class="py-2 px-3 border-b border-[#4B5563] font-semibold">Primary Use</td>
+                                    <td class="py-2 px-3 border-b border-[#4B5563]">Initial screening, early kidney damage (esp. albuminuria)</td>
+                                    <td class="py-2 px-3 border-b border-[#4B5563]">Quantifying heavy/mixed proteinuria, monitoring</td>
+                                </tr>
+                                <tr class="hover:bg-[#374151]">
+                                    <td class="py-2 px-3 border-b border-[#4B5563] font-semibold">Sensitivity (Low-Level Albuminuria)</td>
+                                    <td class="py-2 px-3 border-b border-[#4B5563] accent-text">Higher</td>
+                                    <td class="py-2 px-3 border-b border-[#4B5563]">Lower</td>
+                                </tr>
+                                <tr class="hover:bg-[#374151]">
+                                    <td class="py-2 px-3 border-b border-[#4B5563] font-semibold">Guideline Preference (Initial)</td>
+                                    <td class="py-2 px-3 border-b border-[#4B5563] accent-text">Preferred (NICE, KDIGO)</td>
+                                    <td class="py-2 px-3 border-b border-[#4B5563]">Alternative for higher levels</td>
+                                </tr>
+                                <tr class="hover:bg-[#374151]">
+                                    <td class="py-2 px-3 border-b border-[#4B5563] font-semibold">Normal Range (Approx.)</td>
+                                    <td class="py-2 px-3 border-b border-[#4B5563]">&lt;30 mg/g (&lt;3 mg/mmol)</td>
+                                    <td class="py-2 px-3 border-b border-[#4B5563]">&lt;150-200 mg/g (&lt;15-20 mg/mmol)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-gray-300">ACR is superior for detecting early albuminuric kidney disease (e.g., diabetic nephropathy). PCR is useful for established heavy proteinuria or when non-albumin types are significant. KDIGO/NICE guidelines recommend ACR for initial detection and risk stratification.</p>
+                </div>
+                <div class="lg:col-span-1">
+                    <h3 class="subsection-title">Conceptual Sensitivity</h3>
+                    <div class="chart-container h-[250px] md:h-[300px]">
+                        <canvas id="acrPcrSensitivityChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-gray-500 mt-1">Conceptual: ACR detects smaller amounts of albumin earlier than PCR detects total protein.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="24hr-collection" class="stat-card">
+            <h2 class="section-title">Gold Standard Precision: Mastering the 24-Hour Urine Collection</h2>
+            <p class="text-gray-300 mb-4">Accurate 24-hour urine collection is vital for quantifying daily protein excretion. Success hinges on meticulous patient adherence to instructions.</p>
+            
+            <h3 class="subsection-title">Step-by-Step Patient Collection Guide:</h3>
+            <div class="space-y-2">
+                <div class="flowchart-step">
+                    <strong>1. Start Time:</strong> Choose a start time (e.g., 8:00 AM). Empty bladder completely into the toilet. <strong class="text-red-400">DISCARD THIS URINE.</strong> Record date & time.
+                </div>
+                <div class="flowchart-arrow">▼</div>
+                <div class="flowchart-step">
+                    <strong>2. Collection Period (Next 24 Hrs):</strong> Collect <strong class="accent-text">ALL</strong> urine passed (day & night) in the provided container. Include urine during bowel movements (use intermediate vessel).
+                </div>
+                <div class="flowchart-arrow">▼</div>
+                <div class="flowchart-step">
+                    <strong>3. Storage:</strong> Keep container tightly closed and refrigerated (or in a cooler with ice packs) throughout collection.
+                </div>
+                <div class="flowchart-arrow">▼</div>
+                <div class="flowchart-step">
+                    <strong>4. End of Collection (Exactly 24 Hrs Later):</strong> At the exact 24-hour mark (e.g., 8:00 AM next day), empty bladder completely one last time. <strong class="accent-text">COLLECT THIS FINAL URINE</strong> into the container. Record date & time.
+                </div>
+                <div class="flowchart-arrow">▼</div>
+                <div class="flowchart-step">
+                    <strong>5. Label & Transport:</strong> Ensure container is labeled (name, DOB, start/end times). Transport to lab promptly, keeping it cool.
+                </div>
+            </div>
+
+            <h3 class="subsection-title mt-6">Common Pitfalls & Sources of Error:</h3>
+            <ul class="list-disc list-inside text-gray-400 space-y-1 pl-4">
+                <li><strong>Incorrect Timing:</strong> Not discarding the first void or missing the final collection.</li>
+                <li><strong>Missed Samples:</strong> Most common error, leads to underestimation.</li>
+                <li><strong>Spillage or Contamination:</strong> With feces, toilet paper, etc.</li>
+                <li><strong>Improper Storage:</strong> Not keeping the sample cool.</li>
+                <li><strong>Medication/Dietary Interferences:</strong> Inform lab of all medications.</li>
+            </ul>
+            <p class="text-sm text-gray-500 mt-3">Patients must report any missed samples or collection problems, as the test may need to be repeated.</p>
+        </section>
+
+        <section id="conclusion" class="stat-card bg-[#1E40AF] text-[#F9FAFB]">
+            <h2 class="section-title text-[#DBEAFE] border-b-[#60A5FA]">Key Takeaways & The Path Forward</h2>
+            <p class="mb-4 text-gray-200">A nuanced understanding of urinalysis techniques, from basic dipsticks to quantitative protein assessments, is fundamental for effective patient care. Recognizing test limitations, such as the dipstick's insensitivity to non-albumin proteins, and appreciating the diagnostic power of ACR/PCR and correctly performed 24-hour collections, empowers clinicians to navigate complex renal and systemic conditions.</p>
+            <ul class="list-disc list-inside space-y-2 mb-4 pl-5 text-gray-300">
+                <li><strong class="text-[#F9FAFB]">Early Detection is Paramount:</strong> Utilize sensitive screening tools like ACR for early identification of kidney damage.</li>
+                <li><strong class="text-[#F9FAFB]">Contextual Interpretation:</strong> Always consider clinical context alongside test results, especially with dipstick limitations.</li>
+                <li><strong class="text-[#F9FAFB]">Procedural Excellence:</strong> Emphasize correct procedures for sample collection and testing to ensure accuracy.</li>
+                <li><strong class="text-[#F9FAFB]">Continuous Learning:</strong> Stay updated with evolving guidelines (e.g., NICE, KDIGO) for optimal diagnostic strategies.</li>
+            </ul>
+            <p class="font-semibold text-lg text-gray-100">Advancing patient outcomes in renal health relies on the diligent application of this knowledge, fostering proactive management and mitigating the progression of kidney disease.</p>
+        </section>
+    </main>
+
+    <footer class="bg-[#111827] text-[#9CA3AF] text-center p-6 mt-8 border-t border-[#374151]">
+        <p>&copy; 2025 Urinalysis & Protein Assessment Insights. For informational purposes only.</p>
+        <p class="text-xs text-gray-500 mt-1">Data synthesized from "Urinalysis OSPE Memory Aids" report.</p>
+    </footer>
+
+    <script>
+        const brilliantBluesPalette = {
+            darkBlue: '#3B82F6',  // Brighter Blue for dark theme chart elements (was #00008B)
+            mediumBlue: '#60A5FA',// Brighter Blue for dark theme chart elements (was #0000CD)
+            skyBlue: '#93C5FD',   // Lighter Blue for dark theme chart elements (was #87CEEB)
+            lightBlue: '#BFDBFE',  // Even Lighter Blue for dark theme elements (was #ADD8E6)
+            teal: '#2DD4BF',      // Brighter Teal (was #008080)
+            textLight: '#D1D5DB'  // For chart text (titles, labels, ticks)
+        };
+
+        function wrapLabel(str, maxWidth) {
+            if (str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            let currentLine = '';
+            const lines = [];
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+        
+        const tooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+        
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: brilliantBluesPalette.textLight }
+                },
+                tooltip: { 
+                    callbacks: { title: tooltipTitleCallback },
+                    titleColor: brilliantBluesPalette.textLight,
+                    bodyColor: brilliantBluesPalette.textLight,
+                    backgroundColor: '#1F2937', // Dark background for tooltips
+                    borderColor: '#374151'
+                }
+            },
+            scales: {
+                x: { 
+                    title: { display: true, color: brilliantBluesPalette.textLight },
+                    ticks: { color: brilliantBluesPalette.textLight, font: {size: 10} }
+                },
+                y: { 
+                    title: { display: true, color: brilliantBluesPalette.textLight },
+                    ticks: { color: brilliantBluesPalette.textLight }
+                }
+            }
+        };
+
+
+        // Chart 1: Dipstick Analytes
+        const dipstickAnalytesCtx = document.getElementById('dipstickAnalytesChart').getContext('2d');
+        new Chart(dipstickAnalytesCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Protein', 'Glucose', 'Leukocytes', 'Nitrites', 'Blood', 'Ketones', 'Others (pH, SG, Bili, Uro)'],
+                datasets: [{
+                    label: 'Key Dipstick Analytes',
+                    data: [15, 15, 15, 10, 15, 10, 20],
+                    backgroundColor: [
+                        brilliantBluesPalette.darkBlue, 
+                        brilliantBluesPalette.mediumBlue, 
+                        brilliantBluesPalette.skyBlue, 
+                        brilliantBluesPalette.lightBlue, 
+                        '#F87171', // Tailwind red-400 (brighter red)
+                        brilliantBluesPalette.teal,
+                        '#6B7280' // Tailwind gray-500
+                    ],
+                    borderColor: '#1F2937', // Card background color for separation
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                plugins: {
+                    ...commonChartOptions.plugins,
+                    title: {
+                        display: true,
+                        text: 'Common Urine Dipstick Analytes',
+                        color: brilliantBluesPalette.textLight,
+                        font: { size: 16 }
+                    }
+                },
+                scales: {} // Doughnut charts don't have scales typically
+            }
+        });
+
+        // Chart 2: Dipstick Protein Interferences
+        const dipstickProteinInterferenceCtx = document.getElementById('dipstickProteinInterferenceChart').getContext('2d');
+        const proteinInterferenceLabels = [
+            wrapLabel('Highly Alkaline Urine (pH >8.0)', 16), 
+            wrapLabel('Contaminants (e.g., Quaternary Ammonium)', 16), 
+            wrapLabel('Prolonged Immersion', 16),
+            wrapLabel('Dilute Urine (False Neg)', 16),
+            wrapLabel('Non-Albumin Proteins (False Neg/Low)', 16)
+        ];
+        new Chart(dipstickProteinInterferenceCtx, {
+            type: 'bar',
+            data: {
+                labels: proteinInterferenceLabels,
+                datasets: [{
+                    label: 'False Positives',
+                    data: [3, 2.5, 2, 0, 0], 
+                    backgroundColor: brilliantBluesPalette.mediumBlue,
+                    borderColor: brilliantBluesPalette.darkBlue,
+                    borderWidth: 1
+                }, {
+                    label: 'False Negatives/Low',
+                    data: [0, 0, 0, 3, 3.5], 
+                    backgroundColor: brilliantBluesPalette.skyBlue,
+                    borderColor: brilliantBluesPalette.mediumBlue,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: { 
+                        ...commonChartOptions.scales.x,
+                        stacked: true, 
+                        title: { ...commonChartOptions.scales.x.title, text: 'Relative Impact on Result' }
+                    },
+                    y: { 
+                        ...commonChartOptions.scales.y,
+                        stacked: true,
+                        ticks: { ...commonChartOptions.scales.y.ticks, font: {size: 10} }
+                    }
+                },
+                plugins: {
+                    ...commonChartOptions.plugins,
+                    legend: { ...commonChartOptions.plugins.legend, position: 'top'},
+                    title: {
+                        display: true,
+                        text: 'Factors Affecting Dipstick Protein Results',
+                        color: brilliantBluesPalette.textLight,
+                        font: { size: 16 }
+                    }
+                }
+            }
+        });
+        
+        // Chart 3: Proteinuria Causes
+        const proteinuriaCausesCtx = document.getElementById('proteinuriaCausesChart').getContext('2d');
+        const proteinuriaLabels = [
+            wrapLabel('Fever/Exercise (Transient)', 16), 
+            wrapLabel('Orthostatic (Transient)', 16), 
+            wrapLabel('Diabetic Nephropathy (Glomerular)', 16), 
+            wrapLabel('Glomerulonephritis (Glomerular)', 16), 
+            wrapLabel('Drug-induced TIN (Tubular)', 16), 
+            wrapLabel('Multiple Myeloma (Overflow)', 16)
+        ];
+        new Chart(proteinuriaCausesCtx, {
+            type: 'bar',
+            data: {
+                labels: proteinuriaLabels,
+                datasets: [
+                    {
+                        label: 'Transient Proteinuria',
+                        data: [60, 40, 0, 0, 0, 0], 
+                        backgroundColor: brilliantBluesPalette.skyBlue,
+                    },
+                    {
+                        label: 'Persistent - Glomerular',
+                        data: [0, 0, 70, 65, 0, 0],
+                        backgroundColor: brilliantBluesPalette.darkBlue,
+                    },
+                    {
+                        label: 'Persistent - Tubular',
+                        data: [0, 0, 0, 0, 50, 0],
+                        backgroundColor: brilliantBluesPalette.mediumBlue,
+                    },
+                    {
+                        label: 'Persistent - Overflow',
+                        data: [0, 0, 0, 0, 0, 80],
+                        backgroundColor: brilliantBluesPalette.teal,
+                    }
+                ]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    x: { 
+                        ...commonChartOptions.scales.x,
+                        title: { ...commonChartOptions.scales.x.title, text: 'Common Causes' },
+                        ticks: { ...commonChartOptions.scales.x.ticks, font: {size: 10} }
+                    },
+                    y: { 
+                        ...commonChartOptions.scales.y,
+                        title: { ...commonChartOptions.scales.y.title, text: 'Relative Frequency/Impact (Illustrative)' }
+                    }
+                },
+                plugins: {
+                    ...commonChartOptions.plugins,
+                    legend: { ...commonChartOptions.plugins.legend, position: 'top'},
+                    title: {
+                        display: true,
+                        text: 'Illustrative Causes of Proteinuria Types',
+                        color: brilliantBluesPalette.textLight,
+                        font: { size: 16 }
+                    },
+                    tooltip: { 
+                        ...commonChartOptions.plugins.tooltip,
+                        mode: 'index', 
+                        intersect: false
+                    }
+                }
+            }
+        });
+
+        // Chart 4: ACR/PCR Sensitivity (Conceptual)
+        const acrPcrSensitivityCtx = document.getElementById('acrPcrSensitivityChart').getContext('2d');
+        new Chart(acrPcrSensitivityCtx, {
+            type: 'line',
+            data: {
+                labels: ['Very Low Protein', 'Low Protein', 'Moderate Protein', 'High Protein'],
+                datasets: [{
+                    label: 'ACR Sensitivity',
+                    data: [1, 2, 3, 3.5], 
+                    borderColor: brilliantBluesPalette.darkBlue,
+                    backgroundColor: 'rgba(59, 130, 246, 0.3)', // Adjusted alpha for dark theme
+                    fill: true,
+                    tension: 0.1
+                }, {
+                    label: 'PCR Sensitivity',
+                    data: [0.2, 1, 2.5, 3.5], 
+                    borderColor: brilliantBluesPalette.teal,
+                    backgroundColor: 'rgba(45, 212, 191, 0.3)', // Adjusted alpha for dark theme
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    y: { 
+                        ...commonChartOptions.scales.y,
+                        beginAtZero: true, 
+                        title: { ...commonChartOptions.scales.y.title, text: 'Detection Ability (Conceptual)' }
+                    },
+                    x: {
+                        ...commonChartOptions.scales.x,
+                        title: { ...commonChartOptions.scales.x.title, text: 'Protein Level' }, // Added x-axis title
+                        ticks: { ...commonChartOptions.scales.x.ticks, font: {size: 9} }
+                    }
+                },
+                plugins: {
+                    ...commonChartOptions.plugins,
+                    title: {
+                        display: true,
+                        text: 'ACR vs PCR: Detection Sensitivity',
+                        color: brilliantBluesPalette.textLight,
+                        font: { size: 14 }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
